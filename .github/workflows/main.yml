@@ -1,4 +1,4 @@
-name: Test & Publish Coverage (xUnit + ReportGenerator)
+name: Test & Publish Coverage (.NET 9)
 
 on:
   workflow_dispatch:
@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: dotnet build --no-restore -c Release
 
-      - name: Test and collect coverage
+      - name: Run tests and collect coverage
         run: >
           dotnet test $TEST_PROJECT
           -c Release
@@ -65,7 +65,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./coveragereport
+          path: coveragereport
 
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -74,6 +74,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
